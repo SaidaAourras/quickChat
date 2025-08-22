@@ -24,7 +24,7 @@ export const getUserForSidebar = async (req, res) => {
       });
 
       if (messages.length > 0) {
-        unseenMessages[user._id] = Message.length;
+        unseenMessages[user._id] = messages.length;
       }
     });
     await Promise.all(promises);
@@ -88,7 +88,7 @@ export const sendMessage = async (req, res) => {
       imageUrl = uploadResponse.secure_url;
     }
 
-    const newMessage = Message.create({
+    const newMessage = await Message.create({
       senderId,
       receiverId,
       text,
@@ -101,6 +101,7 @@ export const sendMessage = async (req, res) => {
     if (receiverSocketId) {
       io.to(receiverSocketId).emit("newMessage", newMessage);
     }
+
     res.json({ success: true, newMessage });
   } catch {
     console.log(error.message);

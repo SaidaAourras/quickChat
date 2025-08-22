@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
-import { data } from "react-router-dom";
 
 const backendUrl = import.meta.env.VITE_BACKEND_URL;
 axios.defaults.baseURL = backendUrl;
@@ -31,6 +30,7 @@ export const AuthProvider = ({ children }) => {
   // login function to handle user authentication and socket connection
   const login = async (state, credentials) => {
     try {
+      const { data } = await axios.post(`/api/auth/${state}`, credentials);
       if (data.success) {
         setAuthUser(data.userData);
         connectSocket(data.userData);
