@@ -23,9 +23,10 @@ export const ChatContainer = () => {
 
   // handle sending an image
 
-  const handleSendImage = async () => {
+  const handleSendImage = async (e) => {
     const file = e.target.files[0];
-    if (!file || !file.startsWith("image/")) {
+    console.log(file.type);
+    if (!file || !file.type.startsWith("image/")) {
       toast.error("select an image file");
       return;
     }
